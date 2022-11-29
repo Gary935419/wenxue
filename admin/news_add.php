@@ -9,6 +9,12 @@ $action=$_GET["action"];
 $D_domain=splitx($_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"],"/".$C_admin,0);
 $dirx=splitx($_SERVER["PHP_SELF"],$C_admin,0);
 
+$sql="select * from sl_price where id=1";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$wenzhangprice = $row["wenzhangprice"];
+$wenzhanglong = $row["wenzhanglong"];
+
 $N_id=intval($_GET["N_id"]);
 if($N_id!=""){
     $aa="edit&N_id=".$N_id;
@@ -22,6 +28,7 @@ if($N_id!=""){
         $N_title=$row["N_title"];
         $N_content=$row["N_content"];
         $N_price=$row["N_price"];
+        $N_timelong=$row["N_timelong"];
         $N_price2=$row["N_price2"];
         $N_sort=$row["N_sort"];
         $N_order=$row["N_order"];
@@ -53,8 +60,9 @@ if($N_id!=""){
     $N_author=$_SESSION["A_login"];
     $N_view=0;
     $N_order=0;
-    $N_price=1;
-    $N_price2=1;
+    $N_price=0;
+    $N_timelong=0;
+    $N_price2=0;
     $N_preview=1;
     $N_long=0;
     $N_sh=1;
@@ -91,11 +99,11 @@ if($action=="add"){
             die("{\"msg\":\"请选择目标语言！\"}");
         }
     }
-
+    $N_price = $_POST["N_price"];
+    $N_timelong = $_POST["N_timelong"];
     $N_pic=$_POST["N_pic"];
     $N_title=$_POST["N_title"];
     $N_content=str_replace("&quot;","",$_POST["N_content"]);
-    $N_price=1;
     $N_price2=round($_POST["N_price2"],2);
     if($N_price2==0){
         $N_price2=$N_price;
@@ -146,7 +154,8 @@ if($action=="add"){
         die("{\"msg\":\"文章价格不可为负\"}");
     }
     if($N_title!=""){
-        mysqli_query($conn,"insert into sl_news(N_pic,N_title,N_content,N_price,N_price2,N_sort,N_sort2,N_order,N_date,N_author,N_view,N_preview,N_long,N_sh,N_tag,N_fx,N_video,N_top,N_tpl,N_shuxing,N_keywords,N_description,N_vshow,N_ds,N_dsintro,N_viponly,N_uncopy) values('$N_pic','$N_title','$N_content',$N_price,$N_price2,$N_sort,$N_sort2,$N_order,'$N_date','$N_author',$N_view,0,$N_long,$N_sh,'$N_tag',$N_fx,'$N_video',$N_top,$N_tpl,'$N_shuxing','$N_keywords','$N_description',$N_vshow,$N_ds,'$N_dsintro',$N_viponly,$N_uncopy)");
+
+        mysqli_query($conn,"insert into sl_news(N_pic,N_title,N_content,N_price,N_timelong,N_price2,N_sort,N_sort2,N_order,N_date,N_author,N_view,N_preview,N_long,N_sh,N_tag,N_fx,N_video,N_top,N_tpl,N_shuxing,N_keywords,N_description,N_vshow,N_ds,N_dsintro,N_viponly,N_uncopy) values('$N_pic','$N_title','$N_content',$N_price,$N_timelong,$N_price2,$N_sort,$N_sort2,$N_order,'$N_date','$N_author',$N_view,0,$N_long,$N_sh,'$N_tag',$N_fx,'$N_video',$N_top,$N_tpl,'$N_shuxing','$N_keywords','$N_description',$N_vshow,$N_ds,'$N_dsintro',$N_viponly,$N_uncopy)");
 
         $N_id=getrs("select * from sl_news where N_title='$N_title' and N_pic='$N_pic' and N_sort=$N_sort","N_id");
         if($N_lange_type!="2") {
@@ -184,6 +193,7 @@ if($action=="add"){
                 }
             }
         }
+
         mysqli_query($conn, "insert into sl_log(L_aid,L_time,L_add,L_ip,L_title) values(".$_SESSION["A_id"].",'".date('Y-m-d H:i:s')."','".$_SESSION["add"]."','".getip()."','新增文章')");
         die("{\"msg\":\"success\",\"N_id\":$N_id}");
     }else{
@@ -203,7 +213,8 @@ if($action=="edit"){
     $N_pic=$_POST["N_pic"];
     $N_title=$_POST["N_title"];
     $N_content=str_replace("&quot;","",$_POST["N_content"]);
-    $N_price=1;
+    $N_price = $_POST["N_price"];
+    $N_timelong = $_POST["N_timelong"];
     $N_price2=round($_POST["N_price2"],2);
     if($N_price2==0){
         $N_price2=$N_price;
@@ -260,6 +271,7 @@ if($action=="edit"){
 		N_title='$N_title',
 		N_content='$N_content',
 		N_price=$N_price,
+        N_timelong=$N_timelong,
 		N_price2=$N_price2,
 		N_sort=$N_sort,
 		N_sort2=$N_sort2,
@@ -320,7 +332,8 @@ if($action=="edit"){
                 }
             }
         }
-
+        $sql1 = "update sl_news set N_price=$N_price,N_timelong=$N_timelong where N_id=".$N_id;
+        mysqli_query($conn, $sql1);
         mysqli_query($conn, "insert into sl_log(L_aid,L_time,L_add,L_ip,L_title) values(".$_SESSION["A_id"].",'".date('Y-m-d H:i:s')."','".$_SESSION["add"]."','".getip()."','编辑文章')");
         die("{\"msg\":\"success\",\"N_id\":0}");
     }else{
@@ -432,7 +445,7 @@ if($action=="caiji"){
                 <div class="section-body ">
                     <form id="form">
                         <input type="hidden" id="lange" name="lange" value="zh">
-                        <input type="hidden" id="N_price" name="N_price" value="1">
+<!--                        <input type="hidden" id="N_price" name="N_price" value="1">-->
                         <input type="hidden" id="N_price2" name="N_price2" value="0">
                         <input type="hidden" id="N_view" name="N_view" value="0">
                         <div class="row">
@@ -568,6 +581,20 @@ if($action=="caiji"){
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label">文章价格</label>
+                                        <div class="col-md-4">
+                                            <input type="text"  name="N_price" class="form-control" value="<?php echo $N_price?>">
+                                            <div style="margin-top: 10px;font-size: 12px;color: #AAAAAA">*单位：元</div>
+                                        </div>
+                                        <label class="col-md-2 col-form-label">文章时长</label>
+                                        <div class="col-md-4">
+                                            <input type="text"  name="N_timelong" class="form-control" value="<?php echo $N_timelong?>">
+                                            <div style="margin-top: 10px;font-size: 12px;color: #AAAAAA">*单位：分钟</div>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row" >
                                         <label class="col-md-2 col-form-label" >翻译类型</label>
                                         <div class="col-md-4">

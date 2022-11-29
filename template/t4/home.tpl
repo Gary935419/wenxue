@@ -176,6 +176,10 @@
             ]]
 
         </fh-function>
+        <li rel="1" class="">
+            <a href="?type=videos" title="视频" target="_self">视频</a><em class="phsearchicon"></em>
+            <div class="sub-nav"> </div>
+        </li>
     </ul>
     <ul class="reg">
         <fh-function>

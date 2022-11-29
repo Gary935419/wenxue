@@ -61,8 +61,9 @@ if ($action == "login") {
                 $_SESSION["M_login"] = $row["M_login"];
                 $_SESSION["M_id"] = $row["M_id"];
                 $_SESSION["M_pwd"] = md5($M_pwd);
+                $M_loginnewtime = time();
                 $genkey=gen_key(20);
-                mysqli_query($conn,"update sl_member set M_pwdcode='".$genkey."' where M_id=".$row["M_id"]);
+                mysqli_query($conn,"update sl_member set M_pwdcode='".$genkey."',M_loginnewtime=$M_loginnewtime where M_id=".$row["M_id"]);
                 $_SESSION["M_pwdcode"] = $genkey;
                 Header("Location:".$from);
             }

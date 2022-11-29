@@ -2684,6 +2684,7 @@ body {
 .newscenter-list li img {
 	display: block;
 	width: 100%;
+	height: 260px;
 }
 .newscenter-list li .news-text {
 	padding: 10px;

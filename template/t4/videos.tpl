@@ -19,35 +19,14 @@
     $page=1;
     }
 
-    if($M_id!=""){
-    $M_info=" and N_mid=$M_id".$taginfo;
-    }else{
-    $M_info=" and N_sh=1".$taginfo;
-    }
-
-    $sql="select * from sl_nsort where S_id=".$id;
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-    if (mysqli_num_rows($result) > 0) {
-    $S_sub=$row["S_sub"];
-    }
-
-    if($id==0){
-    $sql="select count(N_id) as N_count from sl_news where N_del=0 ".$M_ninfo."  $M_info order by N_order,N_id desc";
-    }else{
-    if($S_sub==0){
-    $sql="select count(N_id) as N_count from sl_news,sl_nsort where S_del=0 $M_info and N_del=0 ".$M_ninfo."  and N_sort=S_id and S_sub=".$id." order by N_order,N_id desc";
-    }else{
-    $sql="select count(N_id) as N_count from sl_news,sl_nsort where S_del=0 $M_info and N_del=0 ".$M_ninfo."  and N_sort=S_id and S_id=".$id." order by N_order,N_id desc";
-    }
-    }
+    $sql="select count(V_id) as V_count from sl_videos where V_del=0 order by V_order desc";
 
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    $N_count=$row["N_count"];
+    $V_count=$row["V_count"];
 
-    $page_num=intval($N_count/12)+1;
-    if($N_count%12 ==0){
+    $page_num=intval($V_count/12)+1;
+    if($V_count%12 ==0){
     $page_num=$page_num-1;
     }
 
@@ -65,7 +44,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="Pragma" content="no-cache">
-    <title>[S_title] - [fh_title]</title>
+    <title>[视频] - [fh_title]</title>
     <link href="media/[fh_ico]" rel="shortcut icon" />
     <meta name="description" content="[S_content]" />
     <meta name="keywords" content="[S_keywords]" />
@@ -234,55 +213,22 @@
 <div class="full-inside-subnav">
     <div class="commonweb clearfix">
         <div class="inside-subnav">
-            <h3 class="channel-title">[S_title]</h3>
+            <h3 class="channel-title">视频</h3>
             <div class="subnav clearfix">
                 <ul class="clearfix">
-
-
-                    <fh-function>
-                        $U_id=getrs("select * from sl_menu where U_hide=0 and U_del=0 and U_type='news' and U_typeid=".$id,"U_id");
-                        $U_sub=getrs("select * from sl_menu where U_hide=0 and U_del=0 and U_type='news' and U_typeid=".$id,"U_sub");
-
-                        if($U_id!=""){
-                        if($U_sub==0){
-                        $sql="select * from sl_menu where U_hide=0 and U_del=0 and U_sub=".$U_id;
-                        }else{
-                        $sql="select * from sl_menu where U_hide=0 and U_del=0 and U_sub=".$U_sub;
-                        }
-
-                        s[[
-                        if($row["U_type"]=="news" && $row["U_typeid"]==$id){
-                        $active="cur";
-                        }else{
-                        $active="";
-                        }
-                        if($row["U_type"]=="link"){
-                        $link=$row["U_link"];
-                        $target="_blank";
-                        }else{
-                        $link="?type=".$row["U_type"]."&id=".$row["U_typeid"];
-                        $target="_self";
-                        }
-
-                        $api=$api."<li class=\"".$active."\"> <a href=\"".$link."\" target=\"".$target."\" title=\"".$row["U_title"]."\">".$row["U_title"]."</a> </li>";
-                        ]]
-                        }
-                    </fh-function>
-
-
-
+                    <li class="cur"> <a href="?type=videos" target="_self" title="视频">视频</a> </li>
                 </ul>
                 <a href="javascript:;" class="sub-btn sub-prev"></a> <a href="javascript:;" class="sub-btn sub-next"></a> </div>
         </div>
         <div class="crumb">
-            <div class="inner"><a href='./'>主页</a> > <a href=''>[S_title]</a> >  </div>
+            <div class="inner"><a href='./'>主页</a> > <a href=''>视频</a></div>
         </div>
     </div>
 </div>
 <div class="common-clumb-min commonweb clearfix">
     <div class="clumb-title">
-        <h3 class="cn font22">[S_title]</h3>
-        <h2 class="en font24">[S_content]</h2>
+        <h3 class="cn font22">温馨提示:</h3>
+        <h2 class="en font24">本网站视频需注册会员付费观看<br>在页面中点击标题注册VIP会员充值付费</h2>
     </div>
 </div>
 
@@ -291,24 +237,14 @@
         <!--图片尺寸378*278-->
 
         <fh-function>
-            if($id==0){
-            $sql="select * from sl_news where N_del=0   $M_info order by N_top desc,N_order,N_id desc limit ".(($page-1)*12).",12";
-            }else{
-            if($S_sub==0){
-            $sql="select * from sl_news,sl_nsort where S_del=0 and N_del=0  and N_sort=S_id and S_sub=".$id." order by N_top desc,N_order,N_id desc limit ".(($page-1)*12).",12";
-            }else{
-            $sql="select * from sl_news,sl_nsort where S_del=0  and N_del=0  and N_sort=S_id and S_id=".$id." order by N_top desc,N_order,N_id desc limit ".(($page-1)*12).",12";
-            }
-            }
-
+            $sql="select * from sl_videos where V_del=0 order by V_order desc limit ".(($page-1)*12).",12";
             s[[
-
-            $api=$api."<li class=\"col-sm-4 scms-pic\"> <a href=\"?type=newsinfo&id=".$row["N_id"]."\" title=\"".$row["N_title"]."\">
-                <p class=\"news-img\"> <img  src=\"".pic($row["N_pic"])."\" alt=\"".$row["N_title"]."\" /> </p>
+            $api=$api."<li class=\"col-sm-4 scms-pic\"> <a href=\"?type=videosinfo&id=".$row["V_id"]."\" title=\"".$row["V_title"]."\">
+                <p class=\"news-img\"> <img  src=\"".pic($row["V_pic"])."\" alt=\"".$row["V_title"]."\" /> </p>
                 <div class=\"news-text\">
-                    <h3 class=\"name\">".$row["N_title"]."</h3>
-                    <p class=\"desc\">".mb_substr(strip_tags($row["N_content"]),0,200,"utf-8")."</p>
-                    <span class=\"date\">".date("Y-m-d",strtotime($row["N_date"]))."</span> </div>
+                    <h3 class=\"name\">".$row["V_title"]."</h3>
+                    <p class=\"desc\">".mb_substr(strip_tags($row["V_content"]),0,200,"utf-8")."</p>
+                    <span class=\"date\">".date("Y-m-d",strtotime($row["V_date"]))."</span> </div>
             </a> </li>";
             ]]
         </fh-function>

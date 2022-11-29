@@ -426,7 +426,7 @@ $M_counts=getrs("select count(M_id) as M_count from sl_member where M_del=0 and 
 
 						<div class="section-body ">
 							<div class="row">
-								<div class="col-lg-5">
+								<div class="col-lg-6" style="flex:1;max-width: 80%;">
 									<form id="list">
 									<div class="card card-primary">
 
@@ -434,7 +434,11 @@ $M_counts=getrs("select count(M_id) as M_count from sl_member where M_del=0 and 
 											<h4><?php echo $type_info?>列表</h4>
 										</div>
 												<ul class="list-group">
-													<li class="list-group-item " style="background: #f7f7f7"><div class="part"><?php echo $type_info?>ID-帐号</div><div class="part">邮箱</div></li>
+													<li class="list-group-item " style="background: #f7f7f7">
+                                                        <div class="part"><?php echo $type_info?>ID-帐号</div>
+                                                        <div class="part">邮箱</div>
+                                                        <div class="part">最近登录时间</div>
+                                                    </li>
 													<?php 
 
 								if($action=="search"){
@@ -466,11 +470,19 @@ $M_counts=getrs("select count(M_id) as M_count from sl_member where M_del=0 and 
 																		}
 																	}
 
-																	echo "<a id=\"".$m["M_id"]."\" href=\"?M_id=".$m["M_id"]."&type=".$type."\" class=\"list-group-item ".$active."\">
+                                                                    if (empty($m["M_loginnewtime"])){
+                                                                        echo "<a id=\"".$m["M_id"]."\" href=\"?M_id=".$m["M_id"]."&type=".$type."\" class=\"list-group-item ".$active."\">
 																	<div class=\"part ".$vipclass."\"><input type=\"checkbox\" name=\"id[]\" value=\"".$m["M_id"]."\"> ".$m["M_id"]."-".htmlspecialchars($m["M_login"]).$M_vip."</div> 
 																	<div class=\"part\">".htmlspecialchars($m["M_email"])."</div>
-																
+																    <div class=\"part\">暂无最近登录</div>
 																	<img src=\"".pic2($m["M_head"])."\" alt=\"<img src='".pic2($m["M_head"])."' width='200'><br>用户名：".htmlspecialchars($m["M_login"])."<br>邮箱：".htmlspecialchars($m["M_email"])."<br>QQ号：".htmlspecialchars($m["M_qq"])."<br>手机号：".htmlspecialchars($m["M_mobile"])."<br>账户余额：".$m["M_money"]."元<br>会员积分：".$m["M_fen"]."分<br>注册时间：".date("Y-m-d",strtotime($m["M_regtime"]))."\" style=\"height:25px;border-radius:10px;\" class=\"pull-right\"></a>";
+                                                                    }else{
+                                                                        echo "<a id=\"".$m["M_id"]."\" href=\"?M_id=".$m["M_id"]."&type=".$type."\" class=\"list-group-item ".$active."\">
+																	<div class=\"part ".$vipclass."\"><input type=\"checkbox\" name=\"id[]\" value=\"".$m["M_id"]."\"> ".$m["M_id"]."-".htmlspecialchars($m["M_login"]).$M_vip."</div> 
+																	<div class=\"part\">".htmlspecialchars($m["M_email"])."</div>
+																    <div class=\"part\">".date('Y-m-d H:i:s',$m["M_loginnewtime"])."</div>
+																	<img src=\"".pic2($m["M_head"])."\" alt=\"<img src='".pic2($m["M_head"])."' width='200'><br>用户名：".htmlspecialchars($m["M_login"])."<br>邮箱：".htmlspecialchars($m["M_email"])."<br>QQ号：".htmlspecialchars($m["M_qq"])."<br>手机号：".htmlspecialchars($m["M_mobile"])."<br>账户余额：".$m["M_money"]."元<br>会员积分：".$m["M_fen"]."分<br>注册时间：".date("Y-m-d",strtotime($m["M_regtime"]))."\" style=\"height:25px;border-radius:10px;\" class=\"pull-right\"></a>";
+                                                                    }
 																}
 															
 													?>

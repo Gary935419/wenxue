@@ -166,10 +166,11 @@ $sh5=getrs("select count(G_id) as G_count from sl_guestbook where G_reply=''","G
                 <?php if($product_show=="true"){
                 }
                 if($news_show=="true"){
-                    echo "<li><a href=\"news_list.php\" class=\"slide-item\"> 文章管理</a></li>";
+                    echo "<li><a href=\"news_list.php\" class=\"slide-item\"> 文章管理</a></li>
+                    <li><a href=\"videos_list.php\" class=\"slide-item\"> 视频管理</a></li>";
                 }
                 if($course_show=="true"){
-//				echo "<li><a href=\"course_list.php\" class=\"slide-item\"> 课程管理</a></li>";
+				echo "<li><a href=\"course_list.php\" class=\"slide-item\"> 视频管理</a></li>";
                 }?>
                 <li><a href="price_list.php" class="slide-item"> 价格管理</a></li>
             </ul>
@@ -178,7 +179,7 @@ $sh5=getrs("select count(G_id) as G_count from sl_guestbook where G_reply=''","G
         <li class="slide">
             <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-list"></i><span class="side-menu__label">交易管理</span><i class="angle fa fa-angle-right"></i></a>
             <ul class="slide-menu">
-                <!--            <li><a href="orders_list.php" class="slide-item"> 订单管理</a></li>-->
+                <li><a href="neworders_list.php" class="slide-item">购买明细</a></li>
                 <li><a href="list.php" class="slide-item"> 资金明细</a></li>
             </ul>
         </li>

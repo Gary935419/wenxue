@@ -10,7 +10,14 @@ function aaa(a,b,c){
     const LENGTH = 1024 * 1024 * 2;//每次上传的大小 
       var file = document.getElementsByName('video')[0].files[0];//文件对象 
       var filename=document.getElementsByName('video')[0].files[0].name; 
-      var totalSize = file.size;//文件总大小 
+      var totalSize = file.size;//文件总大小
+      var fileSizeCheck = file.size / (1024 * 950);
+      console.log(totalSize);
+      console.log(fileSizeCheck);
+      if (fileSizeCheck >= 200){
+          toastr.error('上传的文件大小不得超过200M!请先确认文件大小!', '错误');
+          return
+      }
       var start = 0;//每次上传的开始字节 
       var end = start + LENGTH;//每次上传的结尾字节 
       var fd = null//创建表单数据对象 

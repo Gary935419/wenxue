@@ -46,7 +46,12 @@ if(is_file($html_path) && $C_cache==1 && $_GET["type"]!="search" && $md5==substr
 	  case "home":
 	  $html=tpl("template/".$t."/home.tpl");
 	  break;
-
+      case "videos":
+      $html=videos(tpl("template/".$t."/videos.tpl"));
+      break;
+      case "videosinfo":
+      $html=videosinfo(tpl("template/".$t."/videosinfo.tpl"));
+      break;
 	  case "text":
 	  if(getrs("select * from sl_text where T_id=$id and T_del=0","T_id")==""){
 	    box("该单页已删除！","back","error");
