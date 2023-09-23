@@ -46,7 +46,7 @@ if($action=="add"){
 		die("{\"msg\":\"视频价格不可为负\"}");
 	}
 
-	if($V_pic!="" && $V_title!="" && $V_content!="" && $V_price!="" && $V_order!="" && $V_video!=""){
+	if($V_pic!="" && $V_title!="" && $V_content!="" && $V_video!=""){
 		mysqli_query($conn,"insert into sl_videos(V_pic,V_title,V_content,V_price,V_order,V_date,V_video,V_del) values('$V_pic','$V_title','$V_content',$V_price,$V_order,'$V_date','$V_video',0)");
 
 // 		$V_id=getrs("select * from sl_videos where $V_title='$V_title' and V_pic='$V_pic' and V_order=$V_order","V_id");
@@ -66,7 +66,7 @@ if($action=="edit"){
 	$V_video=$_POST["V_video"];
     $V_date=date('Y-m-d H:i:s',time());
 
-	if($V_pic!="" && $V_title!="" && $V_content!="" && $V_price!="" && $V_order!="" && $V_video!=""){
+	if($V_pic!="" && $V_title!="" && $V_content!="" && $V_video!=""){
 		mysqli_query($conn, "update sl_videos set
 		V_pic='$V_pic',
 		V_title='$V_title',
@@ -247,7 +247,7 @@ function DelPic(i){
                                                 <?php } ?>
 
 												<div class="form-group row">
-													<label class="col-md-2 col-form-label" ><span style="color:red;">*</span>视频价格</label>
+													<label class="col-md-2 col-form-label" >视频价格</label>
 													<div class="col-md-4">
 														<div class="input-group">
 <!--														<span class="input-group-addon">出售价</span>-->
@@ -280,7 +280,7 @@ function DelPic(i){
 <!--												</div>-->
 
 												<div class="form-group row">
-													<label class="col-md-2 col-form-label" ><span style="color:red;">*</span>视频排序</label>
+													<label class="col-md-2 col-form-label" >视频排序</label>
 													<div class="col-md-4" style="position: relative;">
 														<input type="number"  name="V_order" id="V_order" class="form-control" value="<?php echo $V_order?>" placeholder="数字越小，排序越靠前">
 

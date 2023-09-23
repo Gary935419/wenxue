@@ -188,7 +188,7 @@ $C_all=getrs("select count(V_id) as C_count from sl_videos where V_del=0","C_cou
 // 				}
 // 			}
 // 		}
-		$sql="select * from sl_videos where V_del=0 order by V_order desc,V_id desc limit ".(($page-1)*20).",20";
+		$sql="select * from sl_videos where V_del=0 order by V_order limit ".(($page-1)*20).",20";
 
 		$result = mysqli_query($conn, $sql);
 		if (mysqli_num_rows($result) > 0) {
